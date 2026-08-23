@@ -8,3 +8,4 @@
 - Pinned the validated combination of Nextflow 25.10.7 and nf-core/methylseq 4.2.0.
 - Documented home-quota and Java-selection failure modes discovered during setup.
 - Documented the successful 36-task nf-core smoke test and expected outputs.
+- Added a linear, beginner-oriented runbook from SSH login through verified coverage outputs, with the purpose, expected result, and stop condition for every step.
