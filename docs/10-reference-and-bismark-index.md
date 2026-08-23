@@ -86,7 +86,20 @@ First create `logs` in the repository directory because Slurm opens log paths be
 mkdir -p logs
 ```
 
-Identify the Bismark container used by the pinned nf-core release and assign its absolute path. Then submit:
+Identify the Bismark container used by the pinned nf-core release. After a successful smoke test, find the genome-preparation task and read its recorded container path:
+
+```bash
+PROJECT=/project/xxx/wgbs-pilot
+
+PREP_COMMAND=$(find "$PROJECT/work" -name .command.sh \
+  -exec grep -l 'bismark_genome_preparation' {} + | head -n 1)
+
+grep '^### container:' "$(dirname "$PREP_COMMAND")/.command.run"
+```
+
+Why: this reuses the exact container already tested by nf-core instead of independently guessing a Bismark image or version. Stop if `PREP_COMMAND` is empty or the container file no longer exists.
+
+Assign the printed image path and submit:
 
 ```bash
 GENOME_DIR=/project/xxx/reference/bismark_grch38_primary
@@ -98,6 +111,20 @@ sbatch \
 ```
 
 The script requests four CPUs, 32 GB RAM, and 24 hours, refuses to overwrite an existing `Bisulfite_Genome`, verifies that exactly one FASTA is present, runs the same `bismark_genome_preparation --bowtie2` method used by nf-core/methylseq, and lists the generated files.
+
+## If index construction fails
+
+Read both Slurm logs and preserve any partial directory for diagnosis:
+
+```bash
+cat logs/bismark-index.JOB_ID.out
+cat logs/bismark-index.JOB_ID.err
+
+mv "$GENOME_DIR/Bisulfite_Genome" \
+  "$GENOME_DIR/Bisulfite_Genome.failed.JOB_ID"
+```
+
+Only run `mv` when a failed job actually created `Bisulfite_Genome`. Preserving it makes the failure auditable and lets the guarded script retry without overwriting ambiguous state. Fix the reported cause before resubmitting.
 
 ## Verify
 

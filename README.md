@@ -75,3 +75,5 @@ Tracked examples use placeholders such as `/project/xxx`, `user@xxx`, and `login
 ## Status
 
 Environment bootstrap, Slurm execution, container execution, and the nf-core/methylseq smoke test have been validated. The next validation milestone is the 10-million-read-pair human WGBS pilot.
+
+Repository quality checks validate shell syntax, whitespace, and executable permissions on every push and pull request.
