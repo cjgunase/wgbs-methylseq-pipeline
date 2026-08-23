@@ -1,0 +1,4 @@
+sample,fastq_1,fastq_2,genome
+SAMPLE_001,/project/xxx/fastq/SAMPLE_001_R1.fastq.gz,/project/xxx/fastq/SAMPLE_001_R2.fastq.gz,
+SAMPLE_002,/project/xxx/fastq/SAMPLE_002_R1.fastq.gz,/project/xxx/fastq/SAMPLE_002_R2.fastq.gz,
+

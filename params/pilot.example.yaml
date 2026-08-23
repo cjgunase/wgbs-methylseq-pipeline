@@ -1,0 +1,13 @@
+input: /project/xxx/wgbs-pilot/samplesheets/pilot.csv
+outdir: /project/xxx/wgbs-pilot/results/pilot-10m
+
+aligner: bismark
+cytosine_report: true
+
+fasta: /project/xxx/reference/GRCh38.fa
+bismark_index: /project/xxx/reference/GRCh38-bismark
+
+max_cpus: 8
+max_memory: 32.GB
+max_time: 12.h
+

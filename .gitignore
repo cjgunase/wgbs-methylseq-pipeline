@@ -1,0 +1,33 @@
+# Site-specific and private configuration
+conf/site.local.config
+params/site.local.yaml
+samplesheets/*.private.csv
+
+# Nextflow runtime data
+.nextflow/
+.nextflow.log*
+work/
+results/
+logs/
+nextflow_home/
+singularity_cache/
+tmp/
+
+# Sequencing and alignment data
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+*.bam
+*.bai
+*.cram
+*.crai
+*.cov.gz
+*.bedGraph.gz
+*.sif
+
+# Crash reports and editor files
+hs_err_pid*.log
+.DS_Store
+*~
+

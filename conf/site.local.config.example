@@ -1,0 +1,10 @@
+/*
+ * Copy this file to conf/site.local.config and customize it locally.
+ * conf/site.local.config is ignored by Git.
+ */
+
+process {
+    // queue = 'xxx'
+    // clusterOptions = '--account=xxx'
+}
+
