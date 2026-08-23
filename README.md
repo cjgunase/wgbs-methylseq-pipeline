@@ -27,6 +27,7 @@ The production workflow processes each sample as a complete paired-end dataset. 
 5. Run the [10-million-read-pair pilot](docs/05-pilot.md).
 6. Learn how to [monitor and interpret the run](docs/06-monitoring-and-results.md).
 7. Consult [troubleshooting](docs/07-troubleshooting.md) when a command fails.
+8. Review the sanitized [validation log](docs/09-validation-log.md) to see what has already been tested.
 
 ## Reproducibility policy
 
@@ -69,4 +70,3 @@ Tracked examples use placeholders such as `/project/xxx`, `user@xxx`, and `login
 ## Status
 
 Environment bootstrap and container execution have been validated. The next validation milestone is the 10-million-read-pair nf-core/methylseq pilot.
-
