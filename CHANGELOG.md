@@ -26,5 +26,5 @@
 - Added a comprehensive private run-manifest template covering software, inputs, references, execution, performance, QC, output integrity, and deviations.
 - Added a read-only run monitor and checkpoint guide that distinguish pipeline task jobs from biological samples and identify actionable failure signals.
 - Corrected the monitor to read Slurm controller logs from the documented repository submission directory and to distinguish a missing error log from an empty one.
-- Replaced unsupported pilot YAML `max_*` fields with an enforced Nextflow `process.resourceLimits` configuration after the first real-data run exposed the mismatch.
+- Removed unsupported pilot YAML `max_*` fields after the first real-data run exposed the mismatch; production-like pilots retain nf-core requests, while an explicitly optional constrained config demonstrates `process.resourceLimits` for smaller systems.
 - Made SHA-256 the preferred run-manifest checksum while retaining provider MD5 values when needed for transfer verification.

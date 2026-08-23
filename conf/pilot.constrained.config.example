@@ -1,0 +1,9 @@
+// OPTIONAL constrained compatibility test; not a production benchmark.
+// Copy to an ignored local config and add it explicitly only when testing a
+// machine that cannot satisfy the pipeline defaults. Low limits may slow the
+// workflow or cause Bismark to run out of memory.
+process.resourceLimits = [
+    cpus: 8,
+    memory: 32.GB,
+    time: 12.h
+]

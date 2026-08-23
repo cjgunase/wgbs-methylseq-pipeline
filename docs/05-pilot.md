@@ -57,9 +57,17 @@ Why both reference parameters are supplied: nf-core validates the FASTA together
 
 Why `cytosine_report` is omitted: standard Bismark extraction already produces the `.cov.gz` required by this project. The optional genome-wide cytosine report adds processing and storage and is not needed for this performance pilot. It may be enabled later if a downstream analysis explicitly requires it.
 
-## Pilot resource ceilings
+## Pilot resource policy
 
-The launcher adds `conf/pilot.config`, which contains:
+For a performance pilot, use the same site resource policy intended for production. This makes elapsed time, parallelism, and memory behavior informative for planning the full run. methylseq 4.2.0 assigns Bismark alignment its `process_high` defaults of 12 CPUs and 72 GB, with a process-specific maximum time of eight days. The time is a termination ceiling, not an expected runtime.
+
+Define infrastructure-wide maximums in the ignored `conf/site.local.config` using the modern [`resourceLimits` process directive](https://www.nextflow.io/docs/latest/reference/process.html#resourcelimits), as recommended by the [nf-core system-configuration guide](https://nf-co.re/docs/running/configuration/nextflow-for-your-system). These limits should represent what a node and local policy can actually supply, not an arbitrary attempt to make every task small.
+
+Do not place `max_cpus`, `max_memory`, or `max_time` in this pipeline's parameter YAML. methylseq 4.2.0 does not declare those legacy parameters, so they may be ignored.
+
+### Optional constrained compatibility test
+
+`conf/pilot.constrained.config.example` contains:
 
 ```groovy
 process.resourceLimits = [
@@ -69,11 +77,9 @@ process.resourceLimits = [
 ]
 ```
 
-Why this is a Nextflow config rather than YAML: methylseq 4.2.0 does not declare the legacy `max_cpus`, `max_memory`, or `max_time` pipeline parameters. Unknown YAML keys may be ignored. The modern [`resourceLimits` process directive](https://www.nextflow.io/docs/latest/reference/process.html#resourcelimits) caps the resources submitted for every individual task, including more-specific Bismark rules. The [nf-core system-configuration guide](https://nf-co.re/docs/running/configuration/nextflow-for-your-system) recommends this directive for current pipelines.
+Use it only when the target machine cannot satisfy the normal requests. Copy it to an ignored local file and add it explicitly to a separate constrained test. It is not loaded by `run_pilot.sbatch`. A constrained run may be slower, may fail from insufficient memory, and must not be used directly to estimate production throughput.
 
-These are ceilings, not fixed allocations: a process may request less. They also do not reserve 32 GB or eight CPUs for the entire workflow. Inspect the generated Slurm task and final trace to confirm that the cap was applied and to measure actual use.
-
-The pilot cap is intentionally conservative. A site may need to validate different limits for another species, reference size, or cluster architecture. Change the tracked pilot policy deliberately and record the change; do not add unrecognized resource fields to a parameter YAML.
+Resource limits are ceilings, not fixed allocations. Inspect the generated Slurm task and final trace to learn the requested and actual resources. Select production resources from the successful pilot's peak RSS, CPU efficiency, elapsed time, retries, and site policy, with reasonable headroom.
 
 ## Run the tiny nf-core test first
 
