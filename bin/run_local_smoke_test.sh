@@ -6,6 +6,7 @@ RUNTIME=${RUNTIME:-$REPO_ROOT/.runtime}
 NEXTFLOW_VERSION=${NEXTFLOW_VERSION:-25.10.7}
 METHYLSEQ_VERSION=${METHYLSEQ_VERSION:-4.2.0}
 NEXTFLOW_BIN=${NEXTFLOW_BIN:-$RUNTIME/bin/nextflow}
+RUN_ID=${RUN_ID:-$(date +%Y%m%d-%H%M%S)}
 
 for program in java git curl docker; do
     command -v "$program" >/dev/null 2>&1 || {
@@ -37,7 +38,6 @@ fi
     --outdir "$RUNTIME/results/nfcore-test" \
     -work-dir "$RUNTIME/work" \
     -resume \
-    -with-report "$RUNTIME/logs/nfcore-test.report.html" \
-    -with-trace "$RUNTIME/logs/nfcore-test.trace.tsv" \
-    -with-timeline "$RUNTIME/logs/nfcore-test.timeline.html"
-
+    -with-report "$RUNTIME/logs/nfcore-test.$RUN_ID.report.html" \
+    -with-trace "$RUNTIME/logs/nfcore-test.$RUN_ID.trace.tsv" \
+    -with-timeline "$RUNTIME/logs/nfcore-test.$RUN_ID.timeline.html"

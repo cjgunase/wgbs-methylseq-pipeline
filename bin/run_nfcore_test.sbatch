@@ -53,6 +53,6 @@ CONFIG_ARGS=(-c "$REPO_ROOT/conf/slurm.config")
     --outdir "$PROJECT/results/nfcore-test" \
     -work-dir "$PROJECT/work" \
     -resume \
-    -with-report "$PROJECT/logs/nfcore-test.report.html" \
-    -with-trace "$PROJECT/logs/nfcore-test.trace.tsv" \
-    -with-timeline "$PROJECT/logs/nfcore-test.timeline.html"
+    -with-report "$PROJECT/logs/nfcore-test.${SLURM_JOB_ID}.report.html" \
+    -with-trace "$PROJECT/logs/nfcore-test.${SLURM_JOB_ID}.trace.tsv" \
+    -with-timeline "$PROJECT/logs/nfcore-test.${SLURM_JOB_ID}.timeline.html"

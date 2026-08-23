@@ -56,9 +56,9 @@ find results/nfcore-test -type f -name '*.cov.gz' -print
 
 Also retain:
 
-- `logs/nfcore-test.report.html`
-- `logs/nfcore-test.trace.tsv`
-- `logs/nfcore-test.timeline.html`
+- `logs/nfcore-test.JOB_ID.report.html`
+- `logs/nfcore-test.JOB_ID.trace.tsv`
+- `logs/nfcore-test.JOB_ID.timeline.html`
 - `results/nfcore-test/pipeline_info/`
 - `results/nfcore-test/multiqc/`
 
@@ -93,3 +93,5 @@ Rerun after:
 - a long gap since the previous production analysis.
 
 Do not rerun it before every sample when the environment and workflow versions are unchanged.
+
+Report, trace, and timeline filenames include the Slurm controller job ID. This preserves the evidence from repeated validation runs and prevents Nextflow from refusing to overwrite an earlier report.

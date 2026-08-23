@@ -27,6 +27,12 @@ for program in "${required[@]}"; do
         printf 'OK   %-12s %s\n' "$program" "$(command -v "$program")"
     else
         printf 'FAIL %-12s not found in PATH\n' "$program" >&2
+        case "$program" in
+            java) echo "     Fix: set JAVA_MODULE to a Java 17+ module in conf/site.env." >&2 ;;
+            singularity|apptainer) echo "     Fix: set CONTAINER_MODULE and CONTAINER_PROFILE correctly, or ask the HPC administrator to install the runtime." >&2 ;;
+            sbatch|squeue) echo "     Fix: run on a Slurm cluster/login node or ask the scheduler administrator." >&2 ;;
+            git|curl) echo "     Fix: load a site module or ask the administrator to install this basic host tool." >&2 ;;
+        esac
         failed=1
     fi
 done
@@ -35,6 +41,7 @@ if [[ -n "$NEXTFLOW_BIN" && -x "$NEXTFLOW_BIN" ]]; then
     printf 'OK   %-12s %s\n' nextflow "$NEXTFLOW_BIN"
 else
     printf 'FAIL %-12s check NEXTFLOW_BIN in conf/site.env\n' nextflow >&2
+    echo "     Fix: download the pinned launcher as described in docs/00-zero-to-smoke-test.md, then update NEXTFLOW_BIN." >&2
     failed=1
 fi
 
@@ -46,9 +53,12 @@ if [[ -n "$NEXTFLOW_BIN" && -x "$NEXTFLOW_BIN" ]]; then
 fi
 
 case "${PROJECT:-}" in
-    /home/*|'') printf '\nFAIL PROJECT is unset or under /home. Use project storage.\n' >&2; failed=1 ;;
+    /home/*|'')
+        printf '\nFAIL PROJECT is unset or under /home.\n' >&2
+        echo "     Fix: set PROJECT in conf/site.env to writable project or scratch storage." >&2
+        failed=1
+        ;;
     *) printf '\nOK   %-12s %s\n' project "$PROJECT" ;;
 esac
 
 exit "$failed"
-

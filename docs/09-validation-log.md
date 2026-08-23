@@ -82,3 +82,12 @@ The next action is to confirm or prepare the matching GRCh38 Bismark index, foll
 - Slurm's accounting database returned an internal `slurmdbd` error and the completed job had left active controller memory, so peak RSS and authoritative scheduler elapsed time were unavailable. This is an infrastructure-accounting limitation, not an index failure.
 
 The matching reference and Bismark index are now validated for the 10-million-read-pair human pilot.
+
+### Portable site-configuration smoke test
+
+- Repeated the nf-core/methylseq 4.2.0 smoke test after replacing hard-coded paths/modules with the ignored `conf/site.env` configuration.
+- The environment checker found Java, Singularity, Slurm, Git, curl, Nextflow, and project storage correctly.
+- The workflow completed successfully in one minute: 35 tasks resumed from cache and MultiQC completed as the one new task.
+- Nextflow reported zero failed tasks and approximately 0.2 CPU hours including cached task accounting.
+- The scientific workflow and portable Slurm launcher are operationally validated.
+- The repeated run exposed collisions in static report/timeline filenames; the launcher now includes `SLURM_JOB_ID` in all execution-artifact filenames.

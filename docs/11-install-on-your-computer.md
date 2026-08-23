@@ -70,6 +70,8 @@ The script:
 5. runs the complete tiny test with `-profile test,docker`;
 6. retains results, work data, execution reports, and caches under `.runtime`.
 
+Repeated runs receive timestamped report, trace, and timeline filenames, so prior validation evidence is not overwritten.
+
 Success requires:
 
 ```text
@@ -87,4 +89,3 @@ If a prerequisite is missing, the script stops and names it. Install that prereq
 ## Laptop resource expectations
 
 The tiny test downloads multiple images and may use several gigabytes of disk. Docker Desktop must have enough memory assigned. Do not point this local test at full WGBS FASTQs unless the machine is intentionally provisioned with sufficient CPU, memory, and multi-terabyte storage.
-

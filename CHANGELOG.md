@@ -20,3 +20,6 @@
 - Added a Docker-based local-computer smoke-test launcher with prerequisite checks and automatic pinned Nextflow installation.
 - Documented host prerequisites, installation routes for macOS, Linux, and Windows/WSL2, automatic nf-core container handling, offline clusters, and the boundary between portable workflow code and site-specific infrastructure.
 - Recorded successful GRCh38 Bismark 0.25.1/Bowtie2 index construction and verification, including the reference checksum and unavailable Slurm-accounting metrics.
+- Validated the portable `conf/site.env` Slurm launcher with a successful cached smoke test.
+- Made smoke-test execution reports, traces, and timelines job-specific to preserve repeat-run evidence without filename collisions.
+- Added actionable remediation hints to failed environment checks.
