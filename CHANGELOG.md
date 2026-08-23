@@ -11,3 +11,4 @@
 - Added a linear, beginner-oriented runbook from SSH login through verified coverage outputs, with the purpose, expected result, and stop condition for every step.
 - Added a guarded Slurm Bismark index builder and explained why BWA/BWA-Meth indexes cannot be reused by Bismark.
 - Documented multi-species operation and the requirement for a separate, traceable Bismark index for every species and assembly.
+- Changed reference staging from a symbolic link to a self-contained FASTA copy after validating that external symlink targets may be unavailable inside the container mount.

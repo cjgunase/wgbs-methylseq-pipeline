@@ -62,11 +62,21 @@ Store the checksum in the private run manifest. A Bismark index is valid only fo
 
 ```bash
 mkdir -p /project/xxx/reference/bismark_grch38_primary
-ln -s /project/xxx/reference/GRCh38.primary_assembly.genome.fa \
+cp /project/xxx/reference/GRCh38.primary_assembly.genome.fa \
   /project/xxx/reference/bismark_grch38_primary/GRCh38.primary_assembly.genome.fa
 ```
 
-The symbolic link avoids a second 3 GB FASTA copy. The generated `Bisulfite_Genome` directory will be kept beside the link.
+Use a normal copy, not a symbolic link. A container may mount the new reference directory without mounting the symbolic link's external target, causing Bismark to report that the FASTA does not exist. The extra FASTA copy costs storage but makes the reference directory self-contained, portable, and easier for new users to understand. The generated `Bisulfite_Genome` directory will be kept beside the FASTA.
+
+Confirm that the copy is complete by comparing checksums:
+
+```bash
+md5sum \
+  /project/xxx/reference/GRCh38.primary_assembly.genome.fa \
+  /project/xxx/reference/bismark_grch38_primary/GRCh38.primary_assembly.genome.fa
+```
+
+Both checksums must be identical before index construction.
 
 ## Build through Slurm
 

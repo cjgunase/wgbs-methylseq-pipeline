@@ -63,3 +63,10 @@ Not yet validated:
 - biological QC outputs.
 
 The next action is to confirm or prepare the matching GRCh38 Bismark index, followed by the 10-million-read-pair pilot.
+
+### Initial human-index attempt
+
+- The first dedicated reference directory used a symbolic link to a FASTA outside the mounted directory.
+- Singularity mounted the Bismark reference directory, but Bismark could not resolve the external symbolic-link target and stopped with `No such file or directory`.
+- The incomplete `Bisulfite_Genome` directory was preserved with a `.failed.JOB_ID` suffix for diagnosis.
+- Resolution: stage a normal FASTA copy inside the dedicated reference directory, verify its checksum, and resubmit. The public guide now uses this clearer, self-contained layout.
