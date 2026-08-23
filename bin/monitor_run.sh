@@ -18,8 +18,12 @@ SITE_ENV=${SITE_ENV:-$REPO_ROOT/conf/site.env}
 source "$SITE_ENV"
 : "${PROJECT:?PROJECT is required in conf/site.env}"
 
-OUT_LOG="$PROJECT/logs/wgbs-pilot.$JOB_ID.out"
-ERR_LOG="$PROJECT/logs/wgbs-pilot.$JOB_ID.err"
+# Slurm resolves the relative #SBATCH output/error paths from the directory in
+# which sbatch was invoked. The documented launch location is the repository
+# root. RUN_LOG_DIR permits an explicit override for non-standard submission.
+RUN_LOG_DIR=${RUN_LOG_DIR:-$REPO_ROOT/logs}
+OUT_LOG="$RUN_LOG_DIR/wgbs-pilot.$JOB_ID.out"
+ERR_LOG="$RUN_LOG_DIR/wgbs-pilot.$JOB_ID.err"
 
 echo "WGBS run check: controller job $JOB_ID"
 echo
@@ -51,7 +55,9 @@ fi
 
 echo
 echo "Error screen"
-if [[ ! -s "$ERR_LOG" ]]; then
+if [[ ! -e "$ERR_LOG" ]]; then
+    echo "  WAIT Error log not created yet: $ERR_LOG"
+elif [[ ! -s "$ERR_LOG" ]]; then
     echo "  OK   No controller stderr messages."
 elif grep -Eiq 'ERROR|Failed process|Caused by:|OutOfMemory|out of memory|TIMEOUT|No space left|Disk quota|Killed' "$ERR_LOG"; then
     echo "  CHECK Possible failure text detected:"

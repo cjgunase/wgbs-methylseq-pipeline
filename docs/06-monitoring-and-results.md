@@ -10,6 +10,8 @@ bash bin/monitor_run.sh JOB_ID
 
 It reports the controller state, active `nf-...` task jobs, recent Nextflow progress, recognizable failure messages, project-filesystem usage, and whether a terminal success or failure marker is present. It never cancels, retries, or changes a job.
 
+Submit from the repository root as documented because Slurm resolves the relative controller-log paths from the submission directory. For a non-standard submission directory, set `RUN_LOG_DIR=/absolute/path/to/logs` when invoking the helper.
+
 One biological sample still creates many Slurm jobs. Nextflow submits FastQC, trimming, alignment, deduplication, sorting, indexing, methylation extraction, and reporting as separate tasks. Simultaneous task job IDs therefore do not imply that the samplesheet contains multiple samples.
 
 The active-task list is user-wide because Slurm does not provide the Nextflow parent relationship in `squeue`. If the same user runs multiple workflows simultaneously, correlate tasks with the controller log before drawing conclusions.
