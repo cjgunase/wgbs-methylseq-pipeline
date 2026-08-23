@@ -19,3 +19,4 @@
 - Replaced repeated hard-coded cluster paths and module names with one ignored `conf/site.env` configuration.
 - Added a Docker-based local-computer smoke-test launcher with prerequisite checks and automatic pinned Nextflow installation.
 - Documented host prerequisites, installation routes for macOS, Linux, and Windows/WSL2, automatic nf-core container handling, offline clusters, and the boundary between portable workflow code and site-specific infrastructure.
+- Recorded successful GRCh38 Bismark 0.25.1/Bowtie2 index construction and verification, including the reference checksum and unavailable Slurm-accounting metrics.

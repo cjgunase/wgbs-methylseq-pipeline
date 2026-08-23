@@ -77,7 +77,7 @@ Tracked examples use placeholders such as `/project/xxx`, `user@xxx`, and `login
 
 ## Status
 
-Environment bootstrap, Slurm execution, container execution, and the nf-core/methylseq smoke test have been validated. The next validation milestone is the 10-million-read-pair human WGBS pilot.
+Environment bootstrap, Slurm execution, container execution, the nf-core/methylseq smoke test, and construction of the matching GRCh38 Bismark index have been validated. The next validation milestone is the 10-million-read-pair human WGBS pilot.
 
 The portable `conf/site.env` launcher refactor has passed repository syntax and consistency checks and is awaiting a repeat Slurm smoke test before being labeled operationally validated.
 

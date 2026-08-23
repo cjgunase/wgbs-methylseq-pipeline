@@ -70,3 +70,15 @@ The next action is to confirm or prepare the matching GRCh38 Bismark index, foll
 - Singularity mounted the Bismark reference directory, but Bismark could not resolve the external symbolic-link target and stopped with `No such file or directory`.
 - The incomplete `Bisulfite_Genome` directory was preserved with a `.failed.JOB_ID` suffix for diagnosis.
 - Resolution: stage a normal FASTA copy inside the dedicated reference directory, verify its checksum, and resubmit. The public guide now uses this clearer, self-contained layout.
+
+### GRCh38 Bismark index validation
+
+- Reference: GRCh38 primary assembly FASTA.
+- FASTA MD5: `49bdb80d21a64dcb16acfc941843356e` for both the source and staged copy.
+- Indexer: Bismark 0.25.1 using Bowtie2.
+- Bismark completed genome-folder preparation, CT/GA bisulfite conversion, and parallel Bowtie2 indexing.
+- Verified all six Bowtie2 files in `CT_conversion` and all six in `GA_conversion`, plus both converted multi-FASTA files.
+- The final log reported `Parallel genome indexing complete`.
+- Slurm's accounting database returned an internal `slurmdbd` error and the completed job had left active controller memory, so peak RSS and authoritative scheduler elapsed time were unavailable. This is an infrastructure-accounting limitation, not an index failure.
+
+The matching reference and Bismark index are now validated for the 10-million-read-pair human pilot.
