@@ -34,6 +34,7 @@ The production workflow processes each sample as a complete paired-end dataset. 
 8. Learn how to [monitor and interpret the run](docs/06-monitoring-and-results.md).
 9. Consult [troubleshooting](docs/07-troubleshooting.md) when a command fails.
 10. Review the sanitized [validation log](docs/09-validation-log.md) to see what has already been tested.
+11. Create a private [run manifest](docs/13-run-manifests.md) for every pilot and production execution.
 
 The shorter [installation reference](docs/03-installation.md) and [smoke-test reference](docs/05-smoke-test.md) are for returning users. First-time users should use the linear runbook.
 

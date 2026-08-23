@@ -2,6 +2,7 @@
 conf/site.local.config
 conf/site.env
 params/site.local.yaml
+run_manifests/
 samplesheets/*.private.csv
 
 # Nextflow runtime data

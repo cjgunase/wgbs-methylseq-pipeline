@@ -23,3 +23,4 @@
 - Validated the portable `conf/site.env` Slurm launcher with a successful cached smoke test.
 - Made smoke-test execution reports, traces, and timelines job-specific to preserve repeat-run evidence without filename collisions.
 - Added actionable remediation hints to failed environment checks.
+- Added a comprehensive private run-manifest template covering software, inputs, references, execution, performance, QC, output integrity, and deviations.
