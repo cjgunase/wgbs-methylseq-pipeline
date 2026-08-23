@@ -24,10 +24,11 @@ The production workflow processes each sample as a complete paired-end dataset. 
 2. Read [WGBS concepts](docs/01-wgbs-concepts.md).
 3. Read [computing concepts](docs/02-computing-concepts.md).
 4. Prepare a samplesheet using [the input guide](docs/04-inputs.md).
-5. Run the [10-million-read-pair pilot](docs/05-pilot.md).
-6. Learn how to [monitor and interpret the run](docs/06-monitoring-and-results.md).
-7. Consult [troubleshooting](docs/07-troubleshooting.md) when a command fails.
-8. Review the sanitized [validation log](docs/09-validation-log.md) to see what has already been tested.
+5. Confirm the [reference and Bismark index](docs/10-reference-and-bismark-index.md).
+6. Run the [10-million-read-pair pilot](docs/05-pilot.md).
+7. Learn how to [monitor and interpret the run](docs/06-monitoring-and-results.md).
+8. Consult [troubleshooting](docs/07-troubleshooting.md) when a command fails.
+9. Review the sanitized [validation log](docs/09-validation-log.md) to see what has already been tested.
 
 The shorter [installation reference](docs/03-installation.md) and [smoke-test reference](docs/05-smoke-test.md) are for returning users. First-time users should use the linear runbook.
 
