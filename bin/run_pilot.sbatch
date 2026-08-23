@@ -23,7 +23,7 @@ module load singularity/4.0.3
 
 PROJECT=/project/xxx/wgbs-pilot
 export NXF_HOME="$PROJECT/nextflow_home"
-export NXF_VER=24.10.6
+export NXF_VER=25.10.7
 export NXF_SINGULARITY_CACHEDIR="$PROJECT/singularity_cache"
 export SINGULARITY_CACHEDIR="$PROJECT/singularity_cache"
 export NXF_TEMP="$PROJECT/tmp"
@@ -42,4 +42,3 @@ mkdir -p "$PROJECT/logs" "$NXF_HOME" "$SINGULARITY_CACHEDIR" "$NXF_TEMP"
     -with-trace "$PROJECT/logs/${SLURM_JOB_ID}.trace.tsv" \
     -with-timeline "$PROJECT/logs/${SLURM_JOB_ID}.timeline.html" \
     -with-dag "$PROJECT/logs/${SLURM_JOB_ID}.dag.html"
-

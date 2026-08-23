@@ -20,7 +20,7 @@ Record the following for every production run:
 Two independent versions must be pinned:
 
 ```bash
-export NXF_VER=24.10.6
+export NXF_VER=25.10.7
 nextflow run nf-core/methylseq -r 4.2.0 ...
 ```
 
@@ -33,4 +33,3 @@ Do not silently update production software. Test the new combination on tiny dat
 ## Public versus private records
 
 The public repository should teach the method. A private run manifest should preserve the real paths, sample identifiers, scheduler settings, and checksums. Do not weaken provenance merely to keep the public repository sanitized; keep sensitive provenance in access-controlled storage.
-

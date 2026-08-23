@@ -12,7 +12,7 @@ Nextflow used its default framework cache before `NXF_HOME` was set. Remove only
 
 ```bash
 export NXF_HOME=/project/xxx/wgbs-pilot/nextflow_home
-export NXF_VER=24.10.6
+export NXF_VER=25.10.7
 ```
 
 Do not delete an entire shared cache without inspecting it.
@@ -31,11 +31,13 @@ chmod u+x nextflow
 The launcher selects the latest release unless `NXF_VER` is set:
 
 ```bash
-export NXF_VER=24.10.6
+export NXF_VER=25.10.7
 nextflow -version
 ```
 
 Set this inside every controller batch script.
+
+For nf-core/methylseq 4.2.0, Nextflow 24.10.6 was too old for `nf-schema` 2.5.1, while Nextflow 26.04.6 introduced a repository-layout incompatibility with the pipeline's legacy revision cache. Nextflow 25.10.7 is the validated version for this repository.
 
 ## Singularity shows OCI transaction rollback messages
 
@@ -57,4 +59,3 @@ Slurm must open output paths before the script body can create them.
 ## A workflow task fails
 
 Do not delete `work`. Read the controller log, `.nextflow.log`, and task `.command.err`. Correct the underlying problem and launch the identical command with `-resume`.
-

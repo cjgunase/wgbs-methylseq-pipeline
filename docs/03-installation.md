@@ -25,7 +25,7 @@ PROJECT=/project/xxx/wgbs-pilot
 mkdir -p "$PROJECT"/{bin,logs,nextflow_home,singularity_cache,tmp,work,results}
 
 export NXF_HOME="$PROJECT/nextflow_home"
-export NXF_VER=24.10.6
+export NXF_VER=25.10.7
 export NXF_SINGULARITY_CACHEDIR="$PROJECT/singularity_cache"
 export SINGULARITY_CACHEDIR="$PROJECT/singularity_cache"
 export NXF_TEMP="$PROJECT/tmp"
@@ -57,4 +57,3 @@ Messages about OCI conversion and creation of a SIF file are normal on the first
 export NEXTFLOW="$PROJECT/bin/nextflow"
 bash bin/check_environment.sh
 ```
-

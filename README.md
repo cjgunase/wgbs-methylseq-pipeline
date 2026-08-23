@@ -24,10 +24,11 @@ The production workflow processes each sample as a complete paired-end dataset. 
 2. Read [computing concepts](docs/02-computing-concepts.md).
 3. Follow [installation and environment checks](docs/03-installation.md).
 4. Prepare a samplesheet using [the input guide](docs/04-inputs.md).
-5. Run the [10-million-read-pair pilot](docs/05-pilot.md).
-6. Learn how to [monitor and interpret the run](docs/06-monitoring-and-results.md).
-7. Consult [troubleshooting](docs/07-troubleshooting.md) when a command fails.
-8. Review the sanitized [validation log](docs/09-validation-log.md) to see what has already been tested.
+5. Run the reusable [tiny smoke test](docs/05-smoke-test.md).
+6. Run the [10-million-read-pair pilot](docs/05-pilot.md).
+7. Learn how to [monitor and interpret the run](docs/06-monitoring-and-results.md).
+8. Consult [troubleshooting](docs/07-troubleshooting.md) when a command fails.
+9. Review the sanitized [validation log](docs/09-validation-log.md) to see what has already been tested.
 
 ## Reproducibility policy
 
@@ -45,7 +46,7 @@ See [reproducibility and provenance](docs/08-reproducibility.md).
 
 The initial setup was validated with:
 
-- Nextflow launcher with framework version `24.10.6`
+- Nextflow launcher with framework version `25.10.7`
 - Java `18.0.1.1` supplied by an environment module
 - Singularity CE `4.0.3`
 - SeqKit `2.8.2` executed from a Biocontainer
@@ -69,4 +70,4 @@ Tracked examples use placeholders such as `/project/xxx`, `user@xxx`, and `login
 
 ## Status
 
-Environment bootstrap and container execution have been validated. The next validation milestone is the 10-million-read-pair nf-core/methylseq pilot.
+Environment bootstrap, Slurm execution, container execution, and the nf-core/methylseq smoke test have been validated. The next validation milestone is the 10-million-read-pair human WGBS pilot.
