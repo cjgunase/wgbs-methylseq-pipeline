@@ -10,7 +10,13 @@ SITE_ENV=${SITE_ENV:-$REPO_ROOT/conf/site.env}
 }
 source "$SITE_ENV"
 
-if [[ -r /etc/profile.d/lmod.sh ]]; then source /etc/profile.d/lmod.sh; fi
+if [[ -r /etc/profile.d/lmod.sh ]]; then
+    # Site-owned module initialization may reference Slurm variables that are
+    # unset on a login node. Limit relaxed unset-variable handling to that file.
+    set +u
+    source /etc/profile.d/lmod.sh
+    set -u
+fi
 if command -v module >/dev/null 2>&1; then
     module purge
     [[ -n "${JAVA_MODULE:-}" ]] && module load "$JAVA_MODULE"

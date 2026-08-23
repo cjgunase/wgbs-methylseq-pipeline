@@ -1,5 +1,9 @@
 # Troubleshooting
 
+## Lmod reports an unbound Slurm variable on a login node
+
+Some site-owned `/etc/profile.d/lmod.sh` files reference variables such as `SLURM_NODELIST` that exist only inside a Slurm allocation. Repository scripts keep strict unset-variable checking for their own code but temporarily relax it while sourcing Lmod. Pull the current repository version if an older `check_environment.sh` exits at the Lmod initialization line.
+
 ## Java crashes before Nextflow starts
 
 Symptoms may include a fatal JVM error in `g1PageBasedVirtualSpace.cpp`.
