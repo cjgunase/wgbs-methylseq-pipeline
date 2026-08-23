@@ -83,11 +83,10 @@ Save the job ID printed by `sbatch`.
 Monitor the controller:
 
 ```bash
-squeue -j JOB_ID
-tail -n 60 logs/wgbs-pilot.JOB_ID.out
+bash bin/monitor_run.sh JOB_ID
 ```
 
-An empty `squeue` result means the controller ended. It does not by itself prove success; inspect the final output and error logs.
+The helper is read-only. It explains the controller, child task jobs, recent progress, error screen, and storage state. See [monitoring and results](06-monitoring-and-results.md) for the checkpoints and stop conditions. An empty `squeue` result means the controller ended; it does not by itself prove success.
 
 ## Success criteria
 

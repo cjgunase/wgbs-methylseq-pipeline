@@ -24,3 +24,4 @@
 - Made smoke-test execution reports, traces, and timelines job-specific to preserve repeat-run evidence without filename collisions.
 - Added actionable remediation hints to failed environment checks.
 - Added a comprehensive private run-manifest template covering software, inputs, references, execution, performance, QC, output integrity, and deviations.
+- Added a read-only run monitor and checkpoint guide that distinguish pipeline task jobs from biological samples and identify actionable failure signals.
