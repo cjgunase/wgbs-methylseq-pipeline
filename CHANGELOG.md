@@ -30,3 +30,4 @@
 - Made SHA-256 the preferred run-manifest checksum while retaining provider MD5 values when needed for transfer verification.
 - Added a read-only production preflight gate with fast metadata checks, optional full FASTQ validation, paired-read counting, index verification, output collision protection, and an input-scaled storage estimate.
 - Made environment checks safe on login nodes whose site-owned Lmod initialization references Slurm-only variables under strict shell mode.
+- Prevented Java startup on quota-limited login nodes and made Java/Nextflow startup failures hard stops when checks run inside Slurm.

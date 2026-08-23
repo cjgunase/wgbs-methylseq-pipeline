@@ -8,6 +8,8 @@ Some site-owned `/etc/profile.d/lmod.sh` files reference variables such as `SLUR
 
 Symptoms may include a fatal JVM error in `g1PageBasedVirtualSpace.cpp`.
 
+If this occurs on a memory-limited login node, do not repeatedly start Java there. Current environment and preflight scripts skip JVM startup when no Slurm allocation is detected and require runtime validation on a compute node. Preserve the first `hs_err_pid` log until the cause is recorded; duplicate crash logs may then be removed according to local policy.
+
 Likely causes include an unsuitable Conda Java build or an overly restrictive login-node memory limit. Request a compute allocation, deactivate Conda, purge modules, and load a cluster-supported Java module.
 
 ## `Disk quota exceeded` under `$HOME/.nextflow`

@@ -12,6 +12,8 @@ From the repository root on a login or compute node:
 bash bin/preflight.sh /absolute/path/to/params.yaml
 ```
 
+On a quota-limited login node, the checker validates executable locations but deliberately does not start Java or Nextflow. It prints a warning and requires the check to be repeated inside a Slurm allocation before submission. This prevents a login-node JVM crash from being mistaken for a broken compute environment—or, worse, being ignored as success.
+
 The check validates:
 
 - the configured Java, Nextflow, Slurm, and container host environment;

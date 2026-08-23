@@ -52,10 +52,26 @@ else
 fi
 
 printf '\nVersions\n'
-java -version 2>&1 | head -n 2 || true
 "$CONTAINER_BIN" --version || true
-if [[ -n "$NEXTFLOW_BIN" && -x "$NEXTFLOW_BIN" ]]; then
-    NXF_HOME="$PROJECT/nextflow_home" NXF_VER="$NEXTFLOW_VERSION" "$NEXTFLOW_BIN" -version || true
+if [[ -n "${SLURM_JOB_ID:-}" ]]; then
+    if java_output=$(java -version 2>&1); then
+        printf '%s\n' "$java_output" | head -n 2
+    else
+        echo "FAIL java starts unsuccessfully inside Slurm." >&2
+        echo "     Fix: select a compatible Java module and inspect any hs_err_pid log." >&2
+        failed=1
+    fi
+
+    if [[ -n "$NEXTFLOW_BIN" && -x "$NEXTFLOW_BIN" ]]; then
+        if ! NXF_HOME="$PROJECT/nextflow_home" NXF_VER="$NEXTFLOW_VERSION" "$NEXTFLOW_BIN" -version; then
+            echo "FAIL nextflow starts unsuccessfully inside Slurm." >&2
+            echo "     Fix: resolve Java and NXF_HOME errors before submission." >&2
+            failed=1
+        fi
+    fi
+else
+    echo "SKIP Java and Nextflow startup tests: no Slurm allocation detected."
+    echo "     Run this check once on a compute node before analysis."
 fi
 
 case "${PROJECT:-}" in

@@ -53,9 +53,12 @@ source "$SITE_ENV"
 
 echo "Host environment"
 if bash "$REPO_ROOT/bin/check_environment.sh"; then
-    pass "Host environment check passed."
+    pass "Host prerequisite check passed."
 else
     fail "Host environment check failed; follow the FIX messages above."
+fi
+if [[ -z "${SLURM_JOB_ID:-}" ]]; then
+    warn "Java and Nextflow startup were not tested on the login node; repeat preflight inside Slurm."
 fi
 echo
 
