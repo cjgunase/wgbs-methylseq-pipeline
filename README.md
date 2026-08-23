@@ -2,6 +2,8 @@
 
 This repository is the training and operations guide for processing paired-end whole-genome bisulfite sequencing (WGBS) data with [nf-core/methylseq](https://nf-co.re/methylseq), Nextflow, Singularity, and Slurm.
 
+The workflow is species-independent. Human GRCh38 is the initial project reference, while the same method supports other species by supplying the appropriate assembly FASTA and building a matching Bismark index.
+
 It is intentionally written for scientists who are new to bioinformatics. The repository does not contain sequencing data, credentials, private server names, or institution-specific paths.
 
 ## What the workflow does

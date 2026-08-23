@@ -1,4 +1,40 @@
-# GRCh38 reference and Bismark index
+# Reference genomes and Bismark indexes
+
+## Species support
+
+The workflow is not limited to human data. Bismark can process WGBS from any species with a suitable assembled reference FASTA. GRCh38 is the reference used by the initial project, not a pipeline requirement.
+
+Each species and each assembly version requires its own index. Never align reads against an index from another species or another assembly release, even when chromosome names appear similar.
+
+An organized reference area might look like:
+
+```text
+references/
+  human_GRCh38/
+    GRCh38.fa
+    Bisulfite_Genome/
+  mouse_GRCm39/
+    GRCm39.fa
+    Bisulfite_Genome/
+  bovine_ARS-UCD1.3/
+    ARS-UCD1.3.fa
+    Bisulfite_Genome/
+```
+
+For every reference, record:
+
+- scientific and common species name;
+- assembly name and release;
+- authoritative download source and URL;
+- download date;
+- FASTA checksum;
+- whether primary, alternate, decoy, organellar, or unplaced sequences are included;
+- chromosome naming convention;
+- Bismark and Bowtie2 versions used to build the index.
+
+The samplesheet structure does not change between species. Change the `fasta` and `bismark_index` parameter paths to select the correct reference.
+
+Resource requirements depend on genome size. A small microbial or model-organism genome generally needs less memory and time than human, while a large or highly fragmented assembly may require more. Benchmark a subset before setting production resources.
 
 ## Why Bismark needs a separate index
 
@@ -60,4 +96,3 @@ find "$GENOME_DIR/Bisulfite_Genome" -type f | sort
 ```
 
 Both `CT_conversion` and `GA_conversion` must contain Bowtie2 index files. Check the Slurm job state and peak memory with `sacct` before choosing future resource requests.
-
