@@ -54,6 +54,8 @@ Messages about OCI conversion and creation of a SIF file are normal on the first
 ## 6. Run the environment checker
 
 ```bash
-export NEXTFLOW="$PROJECT/bin/nextflow"
+cd "$PROJECT/pipeline"
+cp conf/site.env.example conf/site.env
+# Edit conf/site.env for this cluster before continuing.
 bash bin/check_environment.sh
 ```

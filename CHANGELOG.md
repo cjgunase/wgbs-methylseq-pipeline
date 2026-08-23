@@ -16,3 +16,6 @@
 - Added automated repository checks for script syntax, whitespace, and executable permissions.
 - Expanded the real-data pilot guide with paired-subset validation, parameter rationale, success criteria, performance capture, and limits on biological interpretation.
 - Disabled the optional genome-wide cytosine report in the default pilot because standard Bismark `.cov.gz` output satisfies the project requirement with less processing and storage.
+- Replaced repeated hard-coded cluster paths and module names with one ignored `conf/site.env` configuration.
+- Added a Docker-based local-computer smoke-test launcher with prerequisite checks and automatic pinned Nextflow installation.
+- Documented host prerequisites, installation routes for macOS, Linux, and Windows/WSL2, automatic nf-core container handling, offline clusters, and the boundary between portable workflow code and site-specific infrastructure.

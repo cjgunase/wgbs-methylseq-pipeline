@@ -36,10 +36,11 @@ Expected result: both files report 10,000,000 sequences of the expected read len
 ```bash
 cp samplesheets/pilot.example.csv samplesheets/pilot.private.csv
 cp params/pilot.example.yaml params/site.local.yaml
+cp conf/site.env.example conf/site.env
 cp conf/site.local.config.example conf/site.local.config
 ```
 
-Replace every `xxx` with a valid local value. These three local files are ignored by Git.
+Replace every `xxx` with a valid local value. These local files are ignored by Git. Configure project paths and modules once in `conf/site.env`; do not edit the tracked batch scripts.
 
 The pilot parameter file should contain:
 
@@ -64,7 +65,7 @@ Why the resource values are ceilings: nf-core assigns resources per process up t
 
 ## Run the tiny nf-core test first
 
-After adapting the tracked Slurm script to the local project path:
+After configuring `conf/site.env` for the cluster:
 
 ```bash
 mkdir -p logs

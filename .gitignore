@@ -1,5 +1,6 @@
 # Site-specific and private configuration
 conf/site.local.config
+conf/site.env
 params/site.local.yaml
 samplesheets/*.private.csv
 
@@ -12,6 +13,7 @@ logs/
 nextflow_home/
 singularity_cache/
 tmp/
+.runtime/
 
 # Sequencing and alignment data
 *.fastq
@@ -30,4 +32,3 @@ tmp/
 hs_err_pid*.log
 .DS_Store
 *~
-

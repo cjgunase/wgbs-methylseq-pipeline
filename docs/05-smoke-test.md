@@ -26,7 +26,7 @@ reference preparation
 
 ## Validated launch
 
-After adapting `/project/xxx` in the local, untracked copy of the batch script:
+After completing the one-time `conf/site.env` configuration from the zero-to-smoke-test runbook:
 
 ```bash
 mkdir -p logs

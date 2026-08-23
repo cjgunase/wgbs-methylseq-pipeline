@@ -217,48 +217,63 @@ Expected result: `seqkit v2.8.2`. Initial OCI download and SIF-conversion messag
 
 ## Step 9: prepare local smoke-test files
 
-Copy the public templates into the local runtime area:
+Move into the cloned repository and create the ignored site configuration:
 
 ```bash
-cp "$PROJECT/pipeline/bin/run_nfcore_test.sbatch" "$PROJECT/bin/run_nfcore_test.sbatch"
-cp "$PROJECT/pipeline/conf/slurm.config" "$PROJECT/conf/slurm.config"
+cd "$PROJECT/pipeline"
+cp conf/site.env.example conf/site.env
+cp conf/site.local.config.example conf/site.local.config
 ```
 
-Why: the tracked public files remain sanitized. The copied batch script becomes the site-specific working version.
+Why: `conf/site.env` holds paths, module names, the container profile, and version pins in one place. `conf/site.local.config` is reserved for private Slurm settings. Both are ignored by Git.
 
-Replace the one placeholder project path in the local copy:
+Set the project and Nextflow paths:
 
 ```bash
-sed -i "s|/project/xxx/wgbs-pilot|$PROJECT|g" "$PROJECT/bin/run_nfcore_test.sbatch"
+sed -i "s|/project/xxx/wgbs-pilot|$PROJECT|g" conf/site.env
 ```
 
-Why: the batch job must know where the local Nextflow launcher, caches, configuration, work, logs, and results live.
+Open `conf/site.env` in a text editor. Replace the example Java and container module names with the values returned by `module spider`. Use `CONTAINER_PROFILE=apptainer` when the site provides Apptainer instead of Singularity. Leave a module value empty when the executable is already in `PATH`.
 
-Inspect all remaining placeholders:
+Inspect remaining placeholders:
 
 ```bash
-grep -RIn 'xxx' "$PROJECT/bin/run_nfcore_test.sbatch" "$PROJECT/conf/slurm.config" || true
+grep -RIn 'xxx' conf/site.env conf/site.local.config || true
 ```
 
-Expected result: no output unless the cluster requires a private account, partition, or other option. Configure those only in the local files.
+Expected result: no output unless `conf/site.local.config` still contains commented instructional placeholders. Configure a required account or partition there.
+
+Create the Slurm log directory before submission:
+
+```bash
+mkdir -p logs
+```
+
+Run the automated prerequisite check:
+
+```bash
+bash bin/check_environment.sh
+```
+
+Expected result: every prerequisite reports `OK`, the pinned versions are printed, and the project path is outside `/home`.
 
 Validate shell syntax:
 
 ```bash
-bash -n "$PROJECT/bin/run_nfcore_test.sbatch"
+bash -n bin/run_nfcore_test.sbatch
 ```
 
 Expected result: no output. Stop and fix any reported line before submission.
 
 ## Step 10: submit the smoke test
 
-Return to the runtime directory:
+Remain in the repository root:
 
 ```bash
-cd "$PROJECT"
+pwd
 ```
 
-Why: the Slurm output paths in the batch script are relative to this directory. The `logs` directory already exists, allowing Slurm to open the files before the script starts.
+Why: the Slurm output paths are relative to the submission directory. The repository's ignored `logs` directory already exists, allowing Slurm to open the files before the script starts. Runtime work and final results still go to `PROJECT`.
 
 Submit:
 
@@ -348,4 +363,3 @@ The initial test completed successfully in 4 minutes 18 seconds with 36 successf
 ## What to do next
 
 Do not analyze production FASTQs yet. First identify the exact human FASTA and either locate or build its matching Bismark index. Then follow the 10-million-read-pair pilot guide.
-
