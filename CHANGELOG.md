@@ -14,3 +14,5 @@
 - Changed reference staging from a symbolic link to a self-contained FASTA copy after validating that external symlink targets may be unavailable inside the container mount.
 - Added explicit instructions for locating the exact nf-core Bismark container and preserving partial indexes after a failed build.
 - Added automated repository checks for script syntax, whitespace, and executable permissions.
+- Expanded the real-data pilot guide with paired-subset validation, parameter rationale, success criteria, performance capture, and limits on biological interpretation.
+- Disabled the optional genome-wide cytosine report in the default pilot because standard Bismark `.cov.gz` output satisfies the project requirement with less processing and storage.
