@@ -28,3 +28,4 @@
 - Corrected the monitor to read Slurm controller logs from the documented repository submission directory and to distinguish a missing error log from an empty one.
 - Removed unsupported pilot YAML `max_*` fields after the first real-data run exposed the mismatch; production-like pilots retain nf-core requests, while an explicitly optional constrained config demonstrates `process.resourceLimits` for smaller systems.
 - Made SHA-256 the preferred run-manifest checksum while retaining provider MD5 values when needed for transfer verification.
+- Added a read-only production preflight gate with fast metadata checks, optional full FASTQ validation, paired-read counting, index verification, output collision protection, and an input-scaled storage estimate.
