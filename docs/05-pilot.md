@@ -51,17 +51,29 @@ outdir: /project/xxx/wgbs-pilot/results/pilot-10m
 aligner: bismark
 fasta: /project/xxx/reference/bismark_species_assembly/genome.fa
 bismark_index: /project/xxx/reference/bismark_species_assembly
-
-max_cpus: 8
-max_memory: 32.GB
-max_time: 12.h
 ```
 
 Why both reference parameters are supplied: nf-core validates the FASTA together with a prebuilt Bismark index. `bismark_index` points to the directory containing `Bisulfite_Genome`, not to `Bisulfite_Genome` itself.
 
 Why `cytosine_report` is omitted: standard Bismark extraction already produces the `.cov.gz` required by this project. The optional genome-wide cytosine report adds processing and storage and is not needed for this performance pilot. It may be enabled later if a downstream analysis explicitly requires it.
 
-Why the resource values are ceilings: nf-core assigns resources per process up to these limits. They do not mean every process receives 32 GB or eight CPUs. The trace and Slurm accounting will show actual use.
+## Pilot resource ceilings
+
+The launcher adds `conf/pilot.config`, which contains:
+
+```groovy
+process.resourceLimits = [
+    cpus: 8,
+    memory: 32.GB,
+    time: 12.h
+]
+```
+
+Why this is a Nextflow config rather than YAML: methylseq 4.2.0 does not declare the legacy `max_cpus`, `max_memory`, or `max_time` pipeline parameters. Unknown YAML keys may be ignored. The modern [`resourceLimits` process directive](https://www.nextflow.io/docs/latest/reference/process.html#resourcelimits) caps the resources submitted for every individual task, including more-specific Bismark rules. The [nf-core system-configuration guide](https://nf-co.re/docs/running/configuration/nextflow-for-your-system) recommends this directive for current pipelines.
+
+These are ceilings, not fixed allocations: a process may request less. They also do not reserve 32 GB or eight CPUs for the entire workflow. Inspect the generated Slurm task and final trace to confirm that the cap was applied and to measure actual use.
+
+The pilot cap is intentionally conservative. A site may need to validate different limits for another species, reference size, or cluster architecture. Change the tracked pilot policy deliberately and record the change; do not add unrecognized resource fields to a parameter YAML.
 
 ## Run the tiny nf-core test first
 

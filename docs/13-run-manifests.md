@@ -33,11 +33,11 @@ Why copy instead of recording only paths: a samplesheet or YAML file could be ed
 
 ```bash
 git rev-parse HEAD
-md5sum "$PROJECT/run_manifests/${JOB_ID}.samplesheet.csv"
-md5sum "$PROJECT/run_manifests/${JOB_ID}.params.yaml"
+sha256sum "$PROJECT/run_manifests/${JOB_ID}.samplesheet.csv"
+sha256sum "$PROJECT/run_manifests/${JOB_ID}.params.yaml"
 ```
 
-Record the repository commit and checksums in the manifest. For references and manageable pilot subsets, record checksums directly. Hashing multi-terabyte production FASTQs is I/O-intensive; use sequencing-provider checksums when trustworthy, or schedule checksum calculation deliberately rather than burdening a shared filesystem during alignment.
+Record the repository commit and SHA-256 checksums in the manifest. Provider-supplied MD5 values may also be retained for transfer verification, but SHA-256 is the preferred identity checksum. For references and manageable pilot subsets, record checksums directly. Hashing multi-terabyte production FASTQs is I/O-intensive; use sequencing-provider checksums when trustworthy, or schedule checksum calculation deliberately rather than burdening a shared filesystem during alignment.
 
 ## Execution artifacts
 
@@ -48,4 +48,3 @@ The launchers create job-specific Nextflow reports, traces, timelines, and DAGs.
 Commit the empty template and generic procedure publicly. Keep completed manifests private when they contain internal paths, sample identifiers, subjects, scheduler accounts, or other controlled metadata.
 
 Sanitized aggregate benchmarks may be added to public documentation only after confirming that they reveal no protected or institution-specific information.
-

@@ -53,6 +53,7 @@ cd "$PROJECT"
 
 CONFIG_ARGS=(-c "$REPO_ROOT/conf/slurm.config")
 [[ -f "$REPO_ROOT/conf/site.local.config" ]] && CONFIG_ARGS+=(-c "$REPO_ROOT/conf/site.local.config")
+CONFIG_ARGS+=(-c "$REPO_ROOT/conf/pilot.config")
 
 "$NEXTFLOW_BIN" run nf-core/methylseq \
     -r "$METHYLSEQ_VERSION" \

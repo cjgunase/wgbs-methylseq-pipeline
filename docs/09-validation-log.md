@@ -91,3 +91,9 @@ The matching reference and Bismark index are now validated for the 10-million-re
 - Nextflow reported zero failed tasks and approximately 0.2 CPU hours including cached task accounting.
 - The scientific workflow and portable Slurm launcher are operationally validated.
 - The repeated run exposed collisions in static report/timeline filenames; the launcher now includes `SLURM_JOB_ID` in all execution-artifact filenames.
+
+## Real-data pilot resource configuration finding
+
+The first 10-million-read-pair run revealed that methylseq 4.2.0 did not recognize `max_cpus`, `max_memory`, and `max_time` entries placed in the parameter YAML. The generated Bismark Slurm task instead used the pipeline defaults: 12 CPUs, 72 GB, and a process-specific eight-day time request. The run itself remained healthy.
+
+The pilot launcher now applies `conf/pilot.config` last, using Nextflow's `process.resourceLimits` directive to enforce per-task ceilings of 8 CPUs, 32 GB, and 12 hours. Future validation must inspect the generated Slurm directives or trace rather than assuming a documented limit was applied.
