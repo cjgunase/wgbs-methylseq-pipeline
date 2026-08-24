@@ -45,6 +45,7 @@ The production workflow processes each sample as a complete paired-end dataset. 
 13. Use the optional [production preflight gate](docs/14-production-preflight.md) before submitting full samples.
 14. Review the [pilot benchmark and production capacity plan](docs/16-pilot-benchmark-and-capacity-plan.md) before selecting production concurrency or developing chunked alignment.
 15. When large storage is assigned, complete the [deferred production setup](docs/17-production-setup.md) and guarded production launcher.
+16. Use the staged [pilot → one full sample → 30-sample production qualification](docs/18-pilot-to-production.md) before launching a cohort.
 
 The shorter [installation reference](docs/03-installation.md) and [smoke-test reference](docs/05-smoke-test.md) are for returning users. First-time users should use the linear runbook.
 
@@ -88,7 +89,7 @@ Tracked examples use placeholders such as `/project/xxx`, `user@xxx`, and `login
 
 ## Status
 
-Environment bootstrap, Slurm execution, container execution, the nf-core/methylseq smoke test, and construction of the matching GRCh38 Bismark index have been validated. The next validation milestone is the 10-million-read-pair human WGBS pilot.
+Environment bootstrap, Slurm execution, container execution, the nf-core/methylseq smoke test, construction of the matching GRCh38 Bismark index, and the 10-million-read-pair human WGBS pilot have been validated. One complete sample is now undergoing production qualification; its results will not be described as validated until the workflow finishes and its MultiQC, required outputs, trace, and provenance are reviewed.
 
 The portable `conf/site.env` launcher has passed repository checks and a repeat Slurm smoke test.
 

@@ -2,6 +2,8 @@
 
 This repository can be prepared before the final storage path exists. Production remains deliberately un-runnable until private files with real paths are created.
 
+Before launching a multi-sample cohort, qualify the production configuration with one complete representative sample by following [pilot to one full sample to production cohort](18-pilot-to-production.md).
+
 ## Files that are ready now
 
 - `bin/run_production.sbatch`: guarded production controller.

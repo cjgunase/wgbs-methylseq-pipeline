@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-08-23
+
+- Added a staged qualification guide from the 10M real-data pilot through one complete-sample production validation and a 30-sample cohort.
+- Defined the complete-sample acceptance gate, MultiQC review requirement, provenance expectations, scheduler interpretation, and conditions for publishing sanitized results.
+
 ## 0.1.0 - 2026-08-23
 
 - Added beginner-oriented WGBS and computing documentation.
