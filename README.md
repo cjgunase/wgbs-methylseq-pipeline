@@ -24,18 +24,19 @@ The production workflow processes each sample as a complete paired-end dataset. 
 
 ## Start here
 
-1. Follow [zero to verified smoke test](docs/00-zero-to-smoke-test.md) exactly. It is the complete beginner runbook through the current validated checkpoint.
-2. For a laptop or workstation, use [install and test on your own computer](docs/11-install-on-your-computer.md).
-3. Read [containers and portability](docs/12-containers-and-portability.md).
-4. Read [WGBS concepts](docs/01-wgbs-concepts.md) and [computing concepts](docs/02-computing-concepts.md).
-5. Prepare a samplesheet using [the input guide](docs/04-inputs.md).
-6. Confirm the [reference and Bismark index](docs/10-reference-and-bismark-index.md).
-7. Run the [10-million-read-pair pilot](docs/05-pilot.md).
-8. Learn how to [monitor and interpret the run](docs/06-monitoring-and-results.md).
-9. Consult [troubleshooting](docs/07-troubleshooting.md) when a command fails.
-10. Review the sanitized [validation log](docs/09-validation-log.md) to see what has already been tested.
-11. Create a private [run manifest](docs/13-run-manifests.md) for every pilot and production execution.
-12. Require the [production preflight gate](docs/14-production-preflight.md) before submitting full samples.
+1. Use the concise [operator checklist from clone to pilot](docs/15-operator-checklist.md); follow its linked detailed guides when a concept or command is unfamiliar.
+2. Follow [zero to verified smoke test](docs/00-zero-to-smoke-test.md) exactly. It is the complete beginner runbook through the current validated checkpoint.
+3. For a laptop or workstation, use [install and test on your own computer](docs/11-install-on-your-computer.md).
+4. Read [containers and portability](docs/12-containers-and-portability.md).
+5. Read [WGBS concepts](docs/01-wgbs-concepts.md) and [computing concepts](docs/02-computing-concepts.md).
+6. Prepare a samplesheet using [the input guide](docs/04-inputs.md).
+7. Confirm the [reference and Bismark index](docs/10-reference-and-bismark-index.md).
+8. Run the [10-million-read-pair pilot](docs/05-pilot.md).
+9. Learn how to [monitor and interpret the run](docs/06-monitoring-and-results.md).
+10. Consult [troubleshooting](docs/07-troubleshooting.md) when a command fails.
+11. Review the sanitized [validation log](docs/09-validation-log.md) to see what has already been tested.
+12. Create a private [run manifest](docs/13-run-manifests.md) for every pilot and production execution.
+13. Use the optional [production preflight gate](docs/14-production-preflight.md) before submitting full samples.
 
 The shorter [installation reference](docs/03-installation.md) and [smoke-test reference](docs/05-smoke-test.md) are for returning users. First-time users should use the linear runbook.
 
