@@ -35,3 +35,4 @@
 - Published the 10M WGBS pilot as a reproducible benchmark deliverable with versioned measurements, capacity and cost projections, a GitHub-ready SVG, explicit assumptions, and the evidence-based decision to plan parallel chunk alignment with global sample-level deduplication.
 - Restyled the benchmark as a publication-oriented three-panel scientific figure separating measured task runtime, linear input-size projection, and idealized cohort makespan.
 - Recorded ten concurrent Bismark alignments as the selected shared-resource policy, added a reusable process-specific `maxForks` example, and extended the scientific concurrency curve through 30 samples.
+- Added an atomic production samplesheet generator that enforces one nonempty R1/R2 pair per unique sample and rejects orphan mates or accidental overwrite.
