@@ -1,0 +1,15 @@
+// Example shared-cluster policy. Review with the local HPC team before use.
+// This limits only the dominant Bismark alignment process to ten simultaneous
+// samples. It does not change the CPU or memory request for each alignment.
+process {
+    withName: BISMARK_ALIGN {
+        maxForks = 10
+    }
+}
+
+// Allow lightweight tasks to be submitted without making the global queue
+// window the bottleneck. Slurm still controls placement and fair-share.
+executor {
+    queueSize = 30
+    submitRateLimit = '2 sec'
+}

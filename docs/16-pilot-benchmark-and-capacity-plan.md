@@ -2,7 +2,7 @@
 
 ![WGBS pilot benchmark and production capacity projection](../assets/benchmark/pilot-benchmark.svg)
 
-**Figure 1. Computational benchmark and linear capacity projection for WGBS processing.** (A) Real execution time for each task in the 10-million-read-pair pilot. (B) Measured pilot wall time and a full-sample estimate obtained by linear scaling with compressed paired-FASTQ bytes. The filled point is measured; the open point and dashed line are projected. (C) Idealized elapsed time for 30 similar samples as workflow concurrency increases. Projections exclude queue delay, retries, chunk overhead, and shared-filesystem contention.
+**Figure 1. Computational benchmark and linear capacity projection for WGBS processing.** (A) Real execution time for each task in the 10-million-read-pair pilot. (B) Measured pilot wall time and a full-sample estimate obtained by linear scaling with compressed paired-FASTQ bytes. The filled point is measured; the open point and dashed line are projected. (C) Idealized elapsed time for 30 similar samples as workflow concurrency increases from 1 to 30. The open point and vertical dashed line mark the selected shared-resource cap of 10 simultaneous Bismark alignments. Projections exclude queue delay, retries, chunk overhead, and shared-filesystem contention.
 
 ## Executive result
 
@@ -58,8 +58,17 @@ For the benchmarked sample, the scaling factor is `75.974153`. Linear projection
 | Thirty samples, concurrency 3 | 65.3 days |
 | Thirty samples, concurrency 5 | 39.2 days |
 | Thirty samples, concurrency 10 | 19.6 days |
+| Thirty samples, concurrency 30 | 6.5 days |
 
 Concurrency projections assume identical samples, immediate scheduling, perfect independence, and no shared-filesystem slowdown. They show capacity demand, not promised completion dates. At concurrency 10, alignment alone may reserve approximately 120 CPUs and 720 GB of memory. Storage contention may prevent linear throughput.
+
+## Selected shared-resource policy
+
+The selected production cap is ten simultaneous `BISMARK_ALIGN` tasks. This provides a projected cohort turnaround of approximately 19.6 days while limiting the dominant workload to 120 CPUs and 720 GB of requested memory. The cap was chosen to preserve capacity for other users; it is a local operating decision rather than a universal nf-core recommendation.
+
+Copy the settings from [`conf/production.shared.config.example`](../conf/production.shared.config.example) into the site's ignored `conf/site.local.config` after local HPC review. The process-specific [`maxForks = 10`](https://www.nextflow.io/docs/latest/reference/process.html#maxforks) limits alignment concurrency without unnecessarily serializing FastQC, trimming, extraction, and reporting. A larger executor queue window allows lightweight tasks to flow, while Slurm retains final control over placement and fair-share.
+
+Reassess the policy if input sizes, node architecture, scheduler rules, or observed production performance change. Ten is a maximum, not a promise that ten alignments will always run.
 
 Compressed bytes are a proxy for read count. The source and subset come from the same sample, which makes the ratio useful, but exact production planning should replace it with full paired-read counts when those can be obtained without burdening shared storage.
 

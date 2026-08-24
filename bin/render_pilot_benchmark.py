@@ -107,9 +107,9 @@ cx, cy, cw, ch = 665, 480, 470, 255
 parts += [label(cx, cy - 30, "C", 18, weight=700), label(cx + 28, cy - 30, "Projected 30-sample makespan", 16, weight=700)]
 qx, qy, qw, qh = cx + 58, cy, cw - 73, ch - 45
 base_days = (summary["projected_full_sample_wall_time"] / 24) * 30
-points = [(n, base_days / n) for n in range(1, 11)]
-for tick in (1, 3, 5, 7, 10):
-    x = qx + qw * (tick - 1) / 9
+points = [(n, base_days / n) for n in range(1, 31)]
+for tick in (1, 5, 10, 15, 20, 25, 30):
+    x = qx + qw * (tick - 1) / 29
     parts.append(f'<line x1="{x:.1f}" y1="{qy}" x2="{x:.1f}" y2="{qy + qh}" stroke="{grid}"/>')
     parts.append(label(x, qy + qh + 19, tick, 10, anchor="middle", color=muted))
 for tick in (0, 50, 100, 150, 200):
@@ -117,14 +117,23 @@ for tick in (0, 50, 100, 150, 200):
     parts.append(f'<line x1="{qx}" y1="{y:.1f}" x2="{qx + qw}" y2="{y:.1f}" stroke="{grid}"/>')
     parts.append(label(qx - 9, y + 4, tick, 10, anchor="end", color=muted))
 
-coords = [(qx + qw * (n - 1) / 9, qy + qh - qh * days / 210) for n, days in points]
+coords = [(qx + qw * (n - 1) / 29, qy + qh - qh * days / 210) for n, days in points]
 parts.append('<polyline points="' + " ".join(f"{x:.1f},{y:.1f}" for x, y in coords) + f'" fill="none" stroke="{blue}" stroke-width="2"/>')
 for (n, days), (x, y) in zip(points, coords):
-    parts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="3.5" fill="{blue}"/>')
-    if n in (1, 3, 5, 10):
-        anchor = "end" if n == 10 else "start"
-        offset = -7 if n == 10 else 7
+    radius = 5.5 if n == 10 else 2.7
+    fill = paper if n == 10 else blue
+    stroke_width = 2 if n == 10 else 1
+    parts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{radius}" fill="{fill}" stroke="{blue}" stroke-width="{stroke_width}"/>')
+    if n in (1, 10, 30):
+        anchor = "end" if n == 30 else "start"
+        offset = -7 if n == 30 else 7
         parts.append(label(x + offset, y - 8, f"{days:.1f} d", 10, anchor=anchor))
+
+selected_x = qx + qw * 9 / 29
+parts += [
+    f'<line x1="{selected_x:.1f}" y1="{qy}" x2="{selected_x:.1f}" y2="{qy + qh}" stroke="{muted}" stroke-width="1" stroke-dasharray="4 4"/>',
+    label(selected_x + 7, qy + 16, "selected cap: n=10", 10, color=muted),
+]
 
 parts += [
     f'<line x1="{qx}" y1="{qy + qh}" x2="{qx + qw}" y2="{qy + qh}" stroke="{ink}"/>',
