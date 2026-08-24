@@ -97,3 +97,33 @@ The matching reference and Bismark index are now validated for the 10-million-re
 The first 10-million-read-pair run revealed that methylseq 4.2.0 did not recognize `max_cpus`, `max_memory`, and `max_time` entries placed in the parameter YAML. The generated Bismark Slurm task instead used the pipeline defaults: 12 CPUs, 72 GB, and a process-specific eight-day time request. The run itself remained healthy.
 
 The unsupported YAML keys were removed. The performance pilot retains the nf-core resource policy so its timing remains comparable to production. An optional constrained configuration is provided only for machines that cannot satisfy those defaults. Infrastructure maximums belong in a private site config using Nextflow's `process.resourceLimits`. Future validation must inspect generated Slurm directives and the final trace rather than assuming a documented limit was applied.
+
+### Silent `PENDING` failure caused by an unapplied resource limit
+
+This finding produced two silent failures that looked like one scheduler problem from outside:
+
+1. `max_cpus`, `max_memory`, and `max_time` were placed in the parameter YAML. methylseq 4.2.0 did not apply those keys, emitted no fatal error, and generated tasks with its default resource requests.
+2. On a partition that could not grant those defaults, Slurm accepted the task but did not allocate it. The task remained `PENDING`; neither Nextflow nor Slurm reported a process failure because execution had never started.
+
+The pipeline therefore appeared healthy while making no computational progress. Looking only at the controller log or the parameter YAML was insufficient: the YAML described the intended limits, not the resources actually submitted.
+
+Resolution: define infrastructure ceilings in the private Nextflow site configuration with `process.resourceLimits`, then inspect the resolved configuration and generated task wrapper. For example:
+
+```groovy
+process.resourceLimits = [
+    cpus: 8,
+    memory: 32.GB,
+    time: 12.h
+]
+```
+
+Verification must include the scheduler reason and the task's generated directives:
+
+```bash
+squeue -j TASK_JOB_ID -o "%.18i %.2t %.30R"
+grep '^#SBATCH' work/HASH_PREFIX/HASH_REMAINDER/.command.run
+```
+
+The generated `#SBATCH` CPU, memory, and time values—not the submitted YAML—are the evidence that the limit took effect. After applying the site configuration, the request must fit the target partition and become eligible for allocation.
+
+This is not WGBS-specific. Any nf-core/Nextflow workload can show the same pattern when an unrecognized parameter is silently ignored and the resulting process defaults exceed scheduler policy. The methylseq 4.2.0 changelog was reviewed, but it did not establish when the legacy `max_*` convention changed or was deprecated; no version boundary is claimed here.
