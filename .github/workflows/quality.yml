@@ -18,9 +18,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for script in bin/*; do
+          for script in bin/*.sh bin/*.sbatch; do
             bash -n "$script"
           done
+
+      - name: Validate Python renderer syntax
+        run: |
+          python3 -c 'compile(open("bin/render_pilot_benchmark.py", encoding="utf-8").read(), "bin/render_pilot_benchmark.py", "exec")'
 
       - name: Check whitespace errors
         run: git show --check --oneline --format= HEAD
@@ -35,3 +39,8 @@ jobs:
               exit 1
             }
           done < <(find bin -maxdepth 1 -type f -print)
+
+      - name: Confirm benchmark visualization is reproducible
+        run: |
+          python3 bin/render_pilot_benchmark.py
+          git diff --exit-code -- assets/benchmark/pilot-benchmark.svg

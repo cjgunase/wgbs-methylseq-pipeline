@@ -1,0 +1,16 @@
+metric	value	unit	basis
+pilot_read_pairs	10000000	read pairs	measured
+pilot_compressed_input	1327212838	bytes	measured
+full_sample_compressed_input	100833871788	bytes	measured metadata
+workflow_wall_time	7424	seconds	measured
+workflow_cpu_time	24.6	CPU-hours	measured
+alignment_wall_time	6352	seconds	measured
+alignment_peak_rss	38.9	GB	measured
+alignment_read_io	126.9	GB	measured
+alignment_write_io	81.4	GB	measured
+required_output_bytes	1204609422	bytes	measured
+full_to_pilot_scaling_factor	75.974153	ratio	compressed-byte projection
+projected_full_sample_wall_time	156.68	hours	linear projection
+projected_full_sample_alignment_time	134.05	hours	linear projection
+projected_full_sample_cpu_time	1869	CPU-hours	linear projection
+projected_30_sample_cpu_time	56069	CPU-hours	linear projection

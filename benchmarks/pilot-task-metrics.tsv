@@ -1,0 +1,11 @@
+stage	realtime_seconds	cpu_percent	peak_rss_gb
+FastQC	82	196.4	8.1
+Trim Galore	319	728.5	0.505
+Bismark alignment	6352	1168.1	38.9
+Bismark deduplication	122	196.0	0.739
+SAMtools sort	44	506.8	4.8
+SAMtools index	7	187.4	0.018
+Methylation extraction	516	527.5	0.164
+Bismark summary	0.326	90.8	0.0048
+Bismark report	0.552	94.7	0.0048
+MultiQC	17.3	38.7	0.700

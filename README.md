@@ -22,6 +22,12 @@ paired FASTQ files
 
 The production workflow processes each sample as a complete paired-end dataset. A small, temporary subset may be created for installation and performance testing; it must not be interpreted as a biologically complete sample.
 
+## Benchmark deliverable
+
+[The 10M real-data pilot benchmark and capacity plan](docs/16-pilot-benchmark-and-capacity-plan.md) records measured runtime, CPU efficiency, peak memory, I/O, full-sample projections, cohort concurrency scenarios, a rate-based cost model, limitations, and the engineering decision that motivates chunked-alignment planning.
+
+![WGBS pilot benchmark and capacity projection](assets/benchmark/pilot-benchmark.svg)
+
 ## Start here
 
 1. Use the concise [operator checklist from clone to pilot](docs/15-operator-checklist.md); follow its linked detailed guides when a concept or command is unfamiliar.
@@ -37,6 +43,7 @@ The production workflow processes each sample as a complete paired-end dataset. 
 11. Review the sanitized [validation log](docs/09-validation-log.md) to see what has already been tested.
 12. Create a private [run manifest](docs/13-run-manifests.md) for every pilot and production execution.
 13. Use the optional [production preflight gate](docs/14-production-preflight.md) before submitting full samples.
+14. Review the [pilot benchmark and production capacity plan](docs/16-pilot-benchmark-and-capacity-plan.md) before selecting production concurrency or developing chunked alignment.
 
 The shorter [installation reference](docs/03-installation.md) and [smoke-test reference](docs/05-smoke-test.md) are for returning users. First-time users should use the linear runbook.
 
