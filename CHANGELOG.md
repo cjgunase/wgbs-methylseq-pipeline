@@ -36,3 +36,4 @@
 - Restyled the benchmark as a publication-oriented three-panel scientific figure separating measured task runtime, linear input-size projection, and idealized cohort makespan.
 - Recorded ten concurrent Bismark alignments as the selected shared-resource policy, added a reusable process-specific `maxForks` example, and extended the scientific concurrency curve through 30 samples.
 - Added an atomic production samplesheet generator that enforces one nonempty R1/R2 pair per unique sample and rejects orphan mates or accidental overwrite.
+- Added a path-independent, guarded production setup with private storage templates, the selected concurrency policy, preflight enforcement, pinned workflow versions, and a dedicated Slurm launcher ready for the future large filesystem.

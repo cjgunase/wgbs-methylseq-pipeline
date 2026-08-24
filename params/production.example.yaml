@@ -1,0 +1,6 @@
+input: /absolute/path/to/production.samplesheet.csv
+outdir: /storage/xxx/wgbs-methylseq-production/results/cohort
+
+aligner: bismark
+fasta: /storage/xxx/references/bismark_species_assembly/reference.fa
+bismark_index: /storage/xxx/references/bismark_species_assembly

@@ -44,6 +44,7 @@ The production workflow processes each sample as a complete paired-end dataset. 
 12. Create a private [run manifest](docs/13-run-manifests.md) for every pilot and production execution.
 13. Use the optional [production preflight gate](docs/14-production-preflight.md) before submitting full samples.
 14. Review the [pilot benchmark and production capacity plan](docs/16-pilot-benchmark-and-capacity-plan.md) before selecting production concurrency or developing chunked alignment.
+15. When large storage is assigned, complete the [deferred production setup](docs/17-production-setup.md) and guarded production launcher.
 
 The shorter [installation reference](docs/03-installation.md) and [smoke-test reference](docs/05-smoke-test.md) are for returning users. First-time users should use the linear runbook.
 

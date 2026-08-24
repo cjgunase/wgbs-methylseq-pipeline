@@ -1,7 +1,10 @@
 # Site-specific and private configuration
 conf/site.local.config
 conf/site.env
+conf/production.env
+conf/production.local.config
 params/site.local.yaml
+params/production.yaml
 run_manifests/
 samplesheets/*.private.csv
 
