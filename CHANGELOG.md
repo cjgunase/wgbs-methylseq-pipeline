@@ -33,3 +33,4 @@
 - Prevented Java startup on quota-limited login nodes and made Java/Nextflow startup failures hard stops when checks run inside Slurm.
 - Added a concise beginner operator checklist connecting installation, smoke test, reference indexing, pilot submission, provenance, monitoring, and the production decision gate.
 - Published the 10M WGBS pilot as a reproducible benchmark deliverable with versioned measurements, capacity and cost projections, a GitHub-ready SVG, explicit assumptions, and the evidence-based decision to plan parallel chunk alignment with global sample-level deduplication.
+- Restyled the benchmark as a publication-oriented three-panel scientific figure separating measured task runtime, linear input-size projection, and idealized cohort makespan.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the tracked WGBS pilot benchmark as a dependency-free SVG."""
+"""Render the tracked WGBS pilot benchmark as a dependency-free scientific SVG."""
 
 from __future__ import annotations
 
@@ -18,89 +18,126 @@ def esc(value: object) -> str:
     return html.escape(str(value))
 
 
+def label(x: float, y: float, value: object, size: int = 12, anchor: str = "start", weight: int = 400, color: str = "#202020") -> str:
+    return f'<text x="{x:.1f}" y="{y:.1f}" text-anchor="{anchor}" font-family="Arial,sans-serif" font-size="{size}" font-weight="{weight}" fill="{color}">{esc(value)}</text>'
+
+
 with TASKS.open(encoding="utf-8", newline="") as handle:
     tasks = list(csv.DictReader(handle, delimiter="\t"))
 
 with SUMMARY.open(encoding="utf-8", newline="") as handle:
     summary = {row["metric"]: float(row["value"]) for row in csv.DictReader(handle, delimiter="\t")}
 
-width, height = 1200, 780
-navy, blue, teal, orange = "#16324F", "#2878B5", "#2A9D8F", "#E76F51"
-ink, muted, grid, paper = "#17212B", "#5D6B78", "#DCE3E8", "#FFFFFF"
+width, height = 1200, 820
+ink, muted, grid, blue, pale, paper = "#202020", "#5A5A5A", "#D5D5D5", "#2B6EA6", "#B9C3CC", "#FFFFFF"
 parts: list[str] = [
     f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
-    '<title id="title">WGBS 10-million-read-pair pilot benchmark and production projection</title>',
-    '<desc id="desc">Bismark alignment dominates pilot runtime. Linear scaling projects about 6.5 days per full sample and 56 thousand CPU-hours for thirty similar samples.</desc>',
+    '<title id="title">Computational benchmark of WGBS processing</title>',
+    '<desc id="desc">Three-panel scientific figure showing measured task runtime, linear full-sample scaling, and projected cohort makespan versus concurrency.</desc>',
     f'<rect width="{width}" height="{height}" fill="{paper}"/>',
-    f'<text x="55" y="52" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="{navy}">WGBS pilot benchmark → production capacity plan</text>',
-    f'<text x="55" y="80" font-family="Arial,sans-serif" font-size="15" fill="{muted}">10M paired reads · nf-core/methylseq 4.2.0 · Bismark · measured values separated from projections</text>',
+    label(55, 42, "Computational benchmark of WGBS processing", 24, weight=700),
+    label(55, 67, "10-million-read-pair pilot; nf-core/methylseq 4.2.0 with Bismark", 13, color=muted),
 ]
 
-# Left panel: task runtime.
-lx, ly, lw, lh = 55, 125, 675, 500
-parts += [
-    f'<text x="{lx}" y="{ly}" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="{ink}">Measured pilot task runtime</text>',
-    f'<text x="{lx}" y="{ly + 24}" font-family="Arial,sans-serif" font-size="13" fill="{muted}">Minutes of real execution time; tasks under one minute remain visible</text>',
-]
-plot_x, plot_y, plot_w = lx + 190, ly + 48, lw - 205
-row_h = 39
-max_minutes = max(float(row["realtime_seconds"]) / 60 for row in tasks)
+# Panel A: measured runtime by process.
+ax, ay, aw = 55, 115, 545
+parts += [label(ax, ay - 30, "A", 18, weight=700), label(ax + 28, ay - 30, "Measured task runtime", 16, weight=700)]
+plot_x, plot_y, plot_w = ax + 185, ay, aw - 200
+row_h = 49
 for tick in (0, 30, 60, 90, 120):
     x = plot_x + plot_w * tick / 120
-    parts.append(f'<line x1="{x:.1f}" y1="{plot_y - 8}" x2="{x:.1f}" y2="{plot_y + row_h * len(tasks)}" stroke="{grid}" stroke-width="1"/>')
-    parts.append(f'<text x="{x:.1f}" y="{plot_y + row_h * len(tasks) + 22}" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="{muted}">{tick}</text>')
+    parts.append(f'<line x1="{x:.1f}" y1="{plot_y}" x2="{x:.1f}" y2="{plot_y + row_h * len(tasks)}" stroke="{grid}" stroke-width="1"/>')
+    parts.append(label(x, plot_y + row_h * len(tasks) + 22, tick, 11, anchor="middle", color=muted))
 
 for index, row in enumerate(tasks):
-    minutes = float(row["realtime_seconds"]) / 60
+    seconds = float(row["realtime_seconds"])
+    minutes = seconds / 60
     y = plot_y + index * row_h
-    bar_width = max(3, plot_w * minutes / 120)
-    color = orange if row["stage"] == "Bismark alignment" else blue
-    parts.append(f'<text x="{plot_x - 10}" y="{y + 17}" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="{ink}">{esc(row["stage"])}</text>')
-    parts.append(f'<rect x="{plot_x}" y="{y + 4}" width="{bar_width:.1f}" height="18" fill="{color}" rx="2"/>')
-    label = f'{minutes:.1f} min' if minutes >= 1 else f'{float(row["realtime_seconds"]):.1f} s'
-    parts.append(f'<text x="{min(plot_x + bar_width + 7, plot_x + plot_w - 2):.1f}" y="{y + 18}" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="{ink}">{label}</text>')
+    bar_width = max(2.5, plot_w * minutes / 120)
+    fill = blue if row["stage"] == "Bismark alignment" else pale
+    parts.append(label(plot_x - 10, y + 17, row["stage"], 11, anchor="end"))
+    parts.append(f'<rect x="{plot_x}" y="{y + 5}" width="{bar_width:.1f}" height="16" fill="{fill}"/>')
+    runtime = f"{minutes:.1f} min" if minutes >= 1 else f"{seconds:.1f} s"
+    parts.append(label(min(plot_x + bar_width + 6, plot_x + plot_w - 2), y + 18, runtime, 10, weight=700))
 
-parts.append(f'<text x="{plot_x + plot_w / 2:.1f}" y="{plot_y + row_h * len(tasks) + 46}" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="{muted}">Real execution time (minutes)</text>')
-
-# Right panel: headline evidence and capacity scenarios.
-rx = 775
-factor = summary["full_to_pilot_scaling_factor"]
-full_days = summary["projected_full_sample_wall_time"] / 24
-cpu_30 = summary["projected_30_sample_cpu_time"]
 parts += [
-    f'<text x="{rx}" y="{ly}" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="{ink}">Evidence and production projection</text>',
-    f'<text x="{rx}" y="{ly + 48}" font-family="Arial,sans-serif" font-size="13" fill="{muted}">Measured</text>',
-    f'<text x="{rx}" y="{ly + 78}" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="{navy}">2h 03m 44s</text>',
-    f'<text x="{rx + 180}" y="{ly + 78}" font-family="Arial,sans-serif" font-size="13" fill="{muted}">pilot wall time</text>',
-    f'<text x="{rx}" y="{ly + 114}" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="{navy}">38.9 GB</text>',
-    f'<text x="{rx + 145}" y="{ly + 114}" font-family="Arial,sans-serif" font-size="13" fill="{muted}">alignment peak RSS</text>',
-    f'<text x="{rx}" y="{ly + 150}" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="{navy}">97%</text>',
-    f'<text x="{rx + 78}" y="{ly + 150}" font-family="Arial,sans-serif" font-size="13" fill="{muted}">12-CPU alignment utilization</text>',
-    f'<line x1="{rx}" y1="{ly + 176}" x2="1145" y2="{ly + 176}" stroke="{grid}"/>',
-    f'<text x="{rx}" y="{ly + 208}" font-family="Arial,sans-serif" font-size="13" fill="{muted}">Projected from {factor:.1f}× compressed-byte scaling</text>',
-    f'<text x="{rx}" y="{ly + 240}" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="{orange}">{full_days:.1f} days</text>',
-    f'<text x="{rx + 135}" y="{ly + 240}" font-family="Arial,sans-serif" font-size="13" fill="{muted}">per full sample</text>',
-    f'<text x="{rx}" y="{ly + 276}" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="{orange}">{cpu_30:,.0f}</text>',
-    f'<text x="{rx + 125}" y="{ly + 276}" font-family="Arial,sans-serif" font-size="13" fill="{muted}">CPU-hours for 30 samples</text>',
-    f'<text x="{rx}" y="{ly + 326}" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="{ink}">30-sample elapsed time by concurrency</text>',
+    f'<line x1="{plot_x}" y1="{plot_y + row_h * len(tasks)}" x2="{plot_x + plot_w}" y2="{plot_y + row_h * len(tasks)}" stroke="{ink}"/>',
+    label(plot_x + plot_w / 2, plot_y + row_h * len(tasks) + 48, "Real execution time (min)", 12, anchor="middle"),
 ]
 
-scenarios = [(1, 195.8), (3, 65.3), (5, 39.2), (10, 19.6)]
-sx, sy, sw = rx + 52, ly + 350, 300
-for idx, (concurrency, days) in enumerate(scenarios):
-    y = sy + idx * 42
-    bw = sw * days / scenarios[0][1]
-    parts.append(f'<text x="{sx - 12}" y="{y + 16}" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="{ink}">{concurrency} at once</text>')
-    parts.append(f'<rect x="{sx}" y="{y + 3}" width="{bw:.1f}" height="19" fill="{teal}" rx="2"/>')
-    parts.append(f'<text x="{sx + bw + 7:.1f}" y="{y + 17}" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="{ink}">{days:.1f} d</text>')
+# Panel B: measured pilot and linear full-sample projection.
+bx, by, bw, bh = 665, 115, 470, 275
+parts += [label(bx, by - 30, "B", 18, weight=700), label(bx + 28, by - 30, "Input-size scaling", 16, weight=700)]
+px, py, pw, ph = bx + 58, by, bw - 73, bh - 45
+x_max, y_max = 110, 175
+for tick in (0, 25, 50, 75, 100):
+    x = px + pw * tick / x_max
+    parts.append(f'<line x1="{x:.1f}" y1="{py}" x2="{x:.1f}" y2="{py + ph}" stroke="{grid}"/>')
+    parts.append(label(x, py + ph + 19, tick, 10, anchor="middle", color=muted))
+for tick in (0, 50, 100, 150):
+    y = py + ph - ph * tick / y_max
+    parts.append(f'<line x1="{px}" y1="{y:.1f}" x2="{px + pw}" y2="{y:.1f}" stroke="{grid}"/>')
+    parts.append(label(px - 9, y + 4, tick, 10, anchor="end", color=muted))
+
+pilot_x = summary["pilot_compressed_input"] / 1e9
+pilot_y = summary["workflow_wall_time"] / 3600
+full_x = summary["full_sample_compressed_input"] / 1e9
+full_y = summary["projected_full_sample_wall_time"]
+x1, y1 = px + pw * pilot_x / x_max, py + ph - ph * pilot_y / y_max
+x2, y2 = px + pw * full_x / x_max, py + ph - ph * full_y / y_max
+parts += [
+    f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{blue}" stroke-width="2" stroke-dasharray="6 5"/>',
+    f'<circle cx="{x1:.1f}" cy="{y1:.1f}" r="5" fill="{blue}"/>',
+    f'<circle cx="{x2:.1f}" cy="{y2:.1f}" r="6" fill="{paper}" stroke="{blue}" stroke-width="2"/>',
+    label(x1 + 10, y1 - 8, "Pilot: 1.33 GB, 2.06 h", 10),
+    label(x2 - 8, y2 - 10, "Projected full sample", 10, anchor="end"),
+    label(x2 - 8, y2 + 5, "100.83 GB, 156.7 h", 10, anchor="end"),
+    f'<line x1="{px}" y1="{py + ph}" x2="{px + pw}" y2="{py + ph}" stroke="{ink}"/>',
+    f'<line x1="{px}" y1="{py}" x2="{px}" y2="{py + ph}" stroke="{ink}"/>',
+    label(px + pw / 2, py + ph + 43, "Compressed paired FASTQ input (GB)", 11, anchor="middle"),
+    f'<text x="{bx + 13}" y="{py + ph / 2}" transform="rotate(-90 {bx + 13} {py + ph / 2})" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="{ink}">Workflow wall time (h)</text>',
+    f'<circle cx="{bx + 250}" cy="{by - 27}" r="4" fill="{blue}"/>',
+    label(bx + 259, by - 23, "measured", 10, color=muted),
+    f'<circle cx="{bx + 337}" cy="{by - 27}" r="5" fill="{paper}" stroke="{blue}" stroke-width="2"/>',
+    label(bx + 347, by - 23, "linear projection", 10, color=muted),
+]
+
+# Panel C: projected cohort makespan as a function of concurrency.
+cx, cy, cw, ch = 665, 480, 470, 255
+parts += [label(cx, cy - 30, "C", 18, weight=700), label(cx + 28, cy - 30, "Projected 30-sample makespan", 16, weight=700)]
+qx, qy, qw, qh = cx + 58, cy, cw - 73, ch - 45
+base_days = (summary["projected_full_sample_wall_time"] / 24) * 30
+points = [(n, base_days / n) for n in range(1, 11)]
+for tick in (1, 3, 5, 7, 10):
+    x = qx + qw * (tick - 1) / 9
+    parts.append(f'<line x1="{x:.1f}" y1="{qy}" x2="{x:.1f}" y2="{qy + qh}" stroke="{grid}"/>')
+    parts.append(label(x, qy + qh + 19, tick, 10, anchor="middle", color=muted))
+for tick in (0, 50, 100, 150, 200):
+    y = qy + qh - qh * tick / 210
+    parts.append(f'<line x1="{qx}" y1="{y:.1f}" x2="{qx + qw}" y2="{y:.1f}" stroke="{grid}"/>')
+    parts.append(label(qx - 9, y + 4, tick, 10, anchor="end", color=muted))
+
+coords = [(qx + qw * (n - 1) / 9, qy + qh - qh * days / 210) for n, days in points]
+parts.append('<polyline points="' + " ".join(f"{x:.1f},{y:.1f}" for x, y in coords) + f'" fill="none" stroke="{blue}" stroke-width="2"/>')
+for (n, days), (x, y) in zip(points, coords):
+    parts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="3.5" fill="{blue}"/>')
+    if n in (1, 3, 5, 10):
+        anchor = "end" if n == 10 else "start"
+        offset = -7 if n == 10 else 7
+        parts.append(label(x + offset, y - 8, f"{days:.1f} d", 10, anchor=anchor))
 
 parts += [
-    f'<line x1="55" y1="665" x2="1145" y2="665" stroke="{grid}"/>',
-    f'<text x="55" y="696" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="{orange}">Decision: standard whole-sample alignment is operationally slow; design parallel chunk alignment with one global sample-level deduplication.</text>',
-    f'<text x="55" y="724" font-family="Arial,sans-serif" font-size="12" fill="{muted}">Projection assumes linear scaling from compressed input size and excludes queue delay, storage contention, retries, and chunk overhead.</text>',
-    f'<text x="55" y="746" font-family="Arial,sans-serif" font-size="12" fill="{muted}">Cost model: projected CPU-hours × local CPU-hour rate + retained TB-months × storage rate + any scheduler or egress charges.</text>',
-    f'<text x="1145" y="760" text-anchor="end" font-family="Arial,sans-serif" font-size="11" fill="{muted}">Source: benchmarks/pilot-summary.tsv and pilot-task-metrics.tsv</text>',
-    '</svg>',
+    f'<line x1="{qx}" y1="{qy + qh}" x2="{qx + qw}" y2="{qy + qh}" stroke="{ink}"/>',
+    f'<line x1="{qx}" y1="{qy}" x2="{qx}" y2="{qy + qh}" stroke="{ink}"/>',
+    label(qx + qw / 2, qy + qh + 43, "Concurrent full-sample workflows (n)", 11, anchor="middle"),
+    f'<text x="{cx + 13}" y="{qy + qh / 2}" transform="rotate(-90 {cx + 13} {qy + qh / 2})" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="{ink}">Projected elapsed time (days)</text>',
+]
+
+parts += [
+    f'<line x1="55" y1="760" x2="1135" y2="760" stroke="{ink}" stroke-width="0.8"/>',
+    label(55, 785, "Measured pilot: 10M read pairs. Projections assume linear scaling by compressed input bytes; queue delay, retries, chunk overhead, and shared-filesystem contention are excluded.", 10, color=muted),
+    label(1135, 805, "Source: benchmarks/pilot-summary.tsv; pilot-task-metrics.tsv", 9, anchor="end", color=muted),
+    "</svg>",
 ]
 
 OUTPUT.parent.mkdir(parents=True, exist_ok=True)

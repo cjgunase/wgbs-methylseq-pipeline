@@ -2,6 +2,8 @@
 
 ![WGBS pilot benchmark and production capacity projection](../assets/benchmark/pilot-benchmark.svg)
 
+**Figure 1. Computational benchmark and linear capacity projection for WGBS processing.** (A) Real execution time for each task in the 10-million-read-pair pilot. (B) Measured pilot wall time and a full-sample estimate obtained by linear scaling with compressed paired-FASTQ bytes. The filled point is measured; the open point and dashed line are projected. (C) Idealized elapsed time for 30 similar samples as workflow concurrency increases. Projections exclude queue delay, retries, chunk overhead, and shared-filesystem contention.
+
 ## Executive result
 
 The containerized nf-core/methylseq workflow successfully processed a synchronized 10-million-read-pair human WGBS pilot from FASTQ through a deduplicated BAM, BAM index, Bismark methylation coverage file, Bismark reports, and MultiQC. All ten tasks completed without retry.
